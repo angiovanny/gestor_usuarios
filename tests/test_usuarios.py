@@ -41,3 +41,16 @@ def test_usuario_activo_mayor_de_edad_es_incluido():
     resultado = procesar_usuarios(usuarios)
 
     assert resultado == ["Ana"]
+
+def test_usuario_activo_ausente():
+    usuarios = [
+        {
+            "id": 8,
+            "nombre": "Carlos",
+            "edad": 27
+        }
+    ]
+
+    resultado = procesar_usuarios(usuarios)
+
+    assert resultado == []
