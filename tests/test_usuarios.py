@@ -1,5 +1,6 @@
 from app.usuarios import procesar_usuarios
 
+
 def test_unitario_menor_de_edad_no_es_incluido():
     usuarios = [
         {
