@@ -1,8 +1,8 @@
-from app.usuarios import procesar_usuarios
+from app.usuarios import Usuario, procesar_usuarios
 
 
 def test_unitario_menor_de_edad_no_es_incluido():
-    usuarios = [
+    usuarios: list[Usuario] = [
         {
             "id": 5,
             "nombre": "Juan",
@@ -16,7 +16,7 @@ def test_unitario_menor_de_edad_no_es_incluido():
     assert resultado == []
 
 def test_usuario_edad_none():
-    usuarios = [
+    usuarios: list[Usuario] = [
         {
             "id": 6,
             "nombre": "Laura",
@@ -30,7 +30,7 @@ def test_usuario_edad_none():
     assert resultado == []
 
 def test_usuario_activo_mayor_de_edad_es_incluido():
-    usuarios = [
+    usuarios: list[Usuario] = [
         {
             "id": 1,
             "nombre": "Ana",
@@ -44,7 +44,7 @@ def test_usuario_activo_mayor_de_edad_es_incluido():
     assert resultado == ["Ana"]
 
 def test_usuario_activo_ausente():
-    usuarios = [
+    usuarios: list[Usuario] = [
         {
             "id": 8,
             "nombre": "Carlos",
@@ -57,7 +57,7 @@ def test_usuario_activo_ausente():
     assert resultado == []
 
 def test_procesar_varios_usuarios():
-    usuarios = [
+    usuarios: list[Usuario] = [
         {
             "nombre": "Ana", 
             "edad": 25, 
