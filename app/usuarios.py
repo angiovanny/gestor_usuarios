@@ -15,7 +15,7 @@ def procesar_usuarios(usuarios: list[Usuario]) -> list[str]:
         edad = usuario.get("edad")
         activo = usuario.get("activo") 
 
-        if activo and edad and edad >= 18:
+        if activo and edad is not None and edad >= 18:
             resultado.append(usuario["nombre"])
 
     return resultado
