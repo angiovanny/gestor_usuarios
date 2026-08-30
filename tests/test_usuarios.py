@@ -1,7 +1,16 @@
-from app.usuarios import Usuario, es_usuario_valido, procesar_usuarios
+from typing import cast
+
+import pytest
+
+from app.usuarios import (
+    Usuario,
+    UsuarioInvalidoError,
+    es_usuario_valido,
+    procesar_usuarios,
+)
 
 
-def test_unitario_menor_de_edad_no_es_incluido():
+def test_unitario_menor_de_edad_no_es_incluido() -> None:
     usuarios: list[Usuario] = [
         {
             "id": 5,
@@ -15,7 +24,7 @@ def test_unitario_menor_de_edad_no_es_incluido():
 
     assert resultado == []
 
-def test_usuario_edad_none():
+def test_usuario_edad_none() -> None:
     usuarios: list[Usuario] = [
         {
             "id": 6,
@@ -29,7 +38,7 @@ def test_usuario_edad_none():
 
     assert resultado == []
 
-def test_usuario_activo_mayor_de_edad_es_incluido():
+def test_usuario_activo_mayor_de_edad_es_incluido() -> None:
     usuarios: list[Usuario] = [
         {
             "id": 1,
@@ -43,7 +52,7 @@ def test_usuario_activo_mayor_de_edad_es_incluido():
 
     assert resultado == ["Ana"]
 
-def test_usuario_activo_ausente():
+def test_usuario_activo_ausente() -> None:
     usuarios: list[Usuario] = [
         {
             "id": 8,
@@ -56,7 +65,7 @@ def test_usuario_activo_ausente():
 
     assert resultado == []
 
-def test_procesar_varios_usuarios():
+def test_procesar_varios_usuarios() -> None:
     usuarios: list[Usuario] = [
         {
             "nombre": "Ana", 
@@ -88,7 +97,7 @@ def test_procesar_varios_usuarios():
     
     assert resultado == ["Ana"]
 
-def test_usuario_activo_mayor_de_edad_es_valido():
+def test_usuario_activo_mayor_de_edad_es_valido() -> None:
     usuario:  Usuario = {
         "nombre": "Ana",
         "edad": 25,
@@ -97,7 +106,7 @@ def test_usuario_activo_mayor_de_edad_es_valido():
 
     assert es_usuario_valido(usuario) is True
 
-def test_usuario_menor_de_edad_no_es_valido():
+def test_usuario_menor_de_edad_no_es_valido() -> None:
     usuario: Usuario = {
         "nombre": "Pedro",
         "edad": 17,
@@ -106,7 +115,7 @@ def test_usuario_menor_de_edad_no_es_valido():
 
     assert es_usuario_valido(usuario) is False
 
-def test_usuario_edad_none_no_es_valido():
+def test_usuario_edad_none_no_es_valido() -> None:
     usuario: Usuario = {
         "nombre": "Diego",
         "edad": None,
@@ -115,7 +124,7 @@ def test_usuario_edad_none_no_es_valido():
 
     assert es_usuario_valido(usuario) is False
 
-def test_usuario_inactivo_no_es_valido():
+def test_usuario_inactivo_no_es_valido() -> None:
     usuario: Usuario = {
         "nombre": "Martin",
         "edad": 26,
@@ -124,10 +133,48 @@ def test_usuario_inactivo_no_es_valido():
 
     assert es_usuario_valido(usuario) is False
 
-def test_usuario_activo_ausente_no_es_valido():
+def test_usuario_activo_ausente_no_es_valido() -> None:
     usuario: Usuario = {
         "nombre": "Marcela",
         "edad": 30
     }
 
     assert es_usuario_valido(usuario) is False
+
+def test_edad_con_tipo_incorrecto() -> None:
+    usuario = cast(
+        Usuario,
+        {
+            "nombre": "Pedro",
+            "edad": "diecisiete",
+            "activo": True
+        }
+    )
+
+    with pytest.raises(UsuarioInvalidoError):
+        es_usuario_valido(usuario)
+
+def test_activo_con_tipo_incorrecto() -> None:
+    usuario = cast(
+        Usuario,
+        {
+            "nombre": "Diego",
+            "edad": 30,
+            "activo": "si"
+        }
+    )
+
+    with pytest.raises(UsuarioInvalidoError):
+        es_usuario_valido(usuario)
+
+def test_edad_boolean_no_es_valida() -> None:
+    usuario = cast(
+        Usuario,
+        {
+            "nombre": "Carlos",
+            "edad": True,
+            "activo": True
+        }
+    )
+    with pytest.raises(UsuarioInvalidoError):
+        es_usuario_valido(usuario)
