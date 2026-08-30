@@ -8,14 +8,17 @@ class Usuario(TypedDict):
     activo: NotRequired[bool]
 
 
+def es_usuario_valido(usuario: Usuario) -> bool:
+    edad = usuario.get("edad")
+    activo = usuario.get("activo")
+
+    return bool(activo and edad is not None and edad >= 18)
+
 def procesar_usuarios(usuarios: list[Usuario]) -> list[str]:
     resultado = []
 
     for usuario in usuarios:
-        edad = usuario.get("edad")
-        activo = usuario.get("activo") 
-
-        if activo and edad is not None and edad >= 18:
+       if es_usuario_valido(usuario):
             resultado.append(usuario["nombre"])
 
     return resultado
