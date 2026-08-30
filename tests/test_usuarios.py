@@ -1,4 +1,4 @@
-from app.usuarios import Usuario, procesar_usuarios
+from app.usuarios import Usuario, es_usuario_valido, procesar_usuarios
 
 
 def test_unitario_menor_de_edad_no_es_incluido():
@@ -87,3 +87,47 @@ def test_procesar_varios_usuarios():
     resultado = procesar_usuarios(usuarios)
     
     assert resultado == ["Ana"]
+
+def test_usuario_activo_mayor_de_edad_es_valido():
+    usuario:  Usuario = {
+        "nombre": "Ana",
+        "edad": 25,
+        "activo": True
+    }
+
+    assert es_usuario_valido(usuario) is True
+
+def test_usuario_menor_de_edad_no_es_valido():
+    usuario: Usuario = {
+        "nombre": "Pedro",
+        "edad": 17,
+        "activo": True
+    }
+
+    assert es_usuario_valido(usuario) is False
+
+def test_usuario_edad_none_no_es_valido():
+    usuario: Usuario = {
+        "nombre": "Diego",
+        "edad": None,
+        "activo": True
+    }
+
+    assert es_usuario_valido(usuario) is False
+
+def test_usuario_inactivo_no_es_valido():
+    usuario: Usuario = {
+        "nombre": "Martin",
+        "edad": 26,
+        "activo": False
+    }
+
+    assert es_usuario_valido(usuario) is False
+
+def test_usuario_activo_ausente_no_es_valido():
+    usuario: Usuario = {
+        "nombre": "Marcela",
+        "edad": 30
+    }
+
+    assert es_usuario_valido(usuario) is False
