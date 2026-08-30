@@ -8,9 +8,20 @@ class Usuario(TypedDict):
     activo: NotRequired[bool]
 
 
+class UsuarioInvalidoError(Exception):
+    """Se produce cuando un usuario contiene datos inválidos."""
+    pass
+
+
 def es_usuario_valido(usuario: Usuario) -> bool:
     edad = usuario.get("edad")
     activo = usuario.get("activo")
+
+    if edad is not None and type(edad) is not int:
+        raise UsuarioInvalidoError("La edad debe ser un entero o None")
+
+    if activo is not None and not isinstance(activo, bool):
+        raise UsuarioInvalidoError("El campo activo debe ser booleano")
 
     return bool(activo and edad is not None and edad >= 18)
 
