@@ -13,7 +13,7 @@ class UsuarioInvalidoError(Exception):
     pass
 
 
-def es_usuario_valido(usuario: Usuario) -> bool:
+def validar_usuario(usuario: Usuario) -> None:
     edad = usuario.get("edad")
     activo = usuario.get("activo")
 
@@ -22,6 +22,12 @@ def es_usuario_valido(usuario: Usuario) -> bool:
 
     if activo is not None and not isinstance(activo, bool):
         raise UsuarioInvalidoError("El campo activo debe ser booleano")
+
+def es_usuario_valido(usuario: Usuario) -> bool:
+    validar_usuario(usuario)
+
+    edad = usuario.get("edad")
+    activo = usuario.get("activo")
 
     return bool(activo and edad is not None and edad >= 18)
 
