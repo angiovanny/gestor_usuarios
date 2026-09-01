@@ -7,6 +7,7 @@ from app.usuarios import (
     UsuarioInvalidoError,
     es_usuario_valido,
     procesar_usuarios,
+    validar_usuario,
 )
 
 
@@ -176,5 +177,53 @@ def test_edad_boolean_no_es_valida() -> None:
             "activo": True
         }
     )
+    with pytest.raises(UsuarioInvalidoError):
+        es_usuario_valido(usuario)
+
+def test_validar_usuario_con_datos_correctos() -> None:
+    usuario: Usuario = {
+        "nombre": "Ana",
+        "edad": 25,
+        "activo": True
+    }
+
+    validar_usuario(usuario)
+
+def test_validar_usuario_edad_incorrecta() -> None:
+    usuario = cast(
+        Usuario,
+        {
+            "nombre": "Pedro",
+            "edad": "diecisiete",
+            "activo": True
+        }
+    )
+
+    with pytest.raises(UsuarioInvalidoError):
+        validar_usuario(usuario)
+
+def test_validar_usuario_activo_incorrecto() -> None:
+    usuario = cast(
+        Usuario,
+        {
+            "nombre": "Diego",
+            "edad": 30,
+            "activo": "si"
+        }
+    )
+
+    with pytest.raises(UsuarioInvalidoError):
+        validar_usuario(usuario)
+
+def test_es_usuario_valido_rechaza_datos_invalidos() -> None:
+    usuario = cast(
+        Usuario,
+        {
+            "nombre": "Pedro",
+            "edad": "diecisiete",
+            "activo": True
+        }
+    )
+
     with pytest.raises(UsuarioInvalidoError):
         es_usuario_valido(usuario)
