@@ -14,6 +14,17 @@ class UsuarioInvalidoError(Exception):
 
 
 def validar_usuario(usuario: Usuario) -> None:
+    nombre = usuario.get("nombre")
+    id_usuario = usuario.get("id")
+
+    if nombre is None:
+        raise UsuarioInvalidoError("El campo nombre es obligatorio")
+    if not isinstance(nombre, str):
+        raise UsuarioInvalidoError("El campo nombre debe ser texto")
+
+    if id_usuario is not None and type(id_usuario) is not int:
+        raise UsuarioInvalidoError("El campo id debe ser un entero")
+    
     edad = usuario.get("edad")
     activo = usuario.get("activo")
 
