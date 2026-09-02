@@ -227,3 +227,93 @@ def test_es_usuario_valido_rechaza_datos_invalidos() -> None:
 
     with pytest.raises(UsuarioInvalidoError):
         es_usuario_valido(usuario)
+
+def test_usuario_sin_nombre_no_es_valido() -> None:
+    usuario = cast(
+        Usuario,
+        {
+            "edad": 25,
+            "activo": True
+        }
+    )
+
+    with pytest.raises(UsuarioInvalidoError):
+        validar_usuario(usuario)
+
+def test_nombre_con_tipo_invalido_no_es_valido() -> None:
+    usuario = cast(
+        Usuario,
+        {
+            "nombre": 123
+        }
+    )
+
+    with pytest.raises(UsuarioInvalidoError):
+        validar_usuario(usuario)
+
+def test_id_con_tipo_invalido_no_es_valido() -> None:
+    usuario = cast(
+        Usuario,
+        {
+            "nombre": "Andres",
+            "id": "123"
+        }
+    )
+
+    with pytest.raises(UsuarioInvalidoError):
+        validar_usuario(usuario)
+
+def test_id_booleano_no_es_valido() -> None:
+    usuario = cast(
+        Usuario,
+        {
+            "nombre": "Andres",
+            "id": True
+        }
+    )
+
+    with pytest.raises(UsuarioInvalidoError):
+        validar_usuario(usuario)
+
+def test_id_entero_es_valido() -> None:
+    usuario: Usuario = {
+        "nombre": "Andres",
+        "id": 123
+    }
+
+    validar_usuario(usuario)
+
+def test_edad_none_es_valida() -> None:
+    usuario: Usuario = {
+            "nombre": "Andres",
+            "edad": None
+    }
+
+    validar_usuario(usuario)
+
+def test_activo_con_tipo_invalido_no_es_valido() -> None:
+    usuario = cast(
+        Usuario,
+        {
+            "nombre": "Andres",
+            "activo": "True"
+        }
+    )
+
+    with pytest.raises(UsuarioInvalidoError):
+        validar_usuario(usuario)
+
+def test_activo_booleano_es_valido() -> None:
+    usuario: Usuario = {
+            "nombre": "Andres",
+            "activo": True
+    }
+
+    validar_usuario(usuario)
+
+def test_usuario_solo_con_nombre_es_valido_estructuralmente() -> None:
+    usuario: Usuario = {
+        "nombre": "Andres"
+    }
+
+    validar_usuario(usuario)
