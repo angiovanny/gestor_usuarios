@@ -5,6 +5,7 @@ import pytest
 from app.usuarios import (
     Usuario,
     UsuarioInvalidoError,
+    edad_valida,
     es_usuario_valido,
     procesar_usuarios,
     validar_usuario,
@@ -317,3 +318,42 @@ def test_usuario_solo_con_nombre_es_valido_estructuralmente() -> None:
     }
 
     validar_usuario(usuario)
+
+def test_usuario_menor_de_18_no_es_valido() -> None:
+    usuario: Usuario = {
+        "nombre": "Pedro",
+        "edad": 16,
+        "activo": True
+    }
+
+    assert es_usuario_valido(usuario) is False
+
+def test_usuario_con_18_anos_es_valida() -> None:
+    usuario: Usuario = {
+        "nombre": "Pedro",
+        "edad": 18,
+        "activo": True
+    }
+
+    assert es_usuario_valido(usuario) is True
+
+def test_usuario_mayor_de_18_es_valida() -> None:
+    usuario: Usuario = {
+        "nombre": "Pedro",
+        "edad": 25,
+        "activo": True
+    }
+
+    assert es_usuario_valido(usuario) is True
+
+def test_edad_none_no_es_valida() -> None:
+    assert edad_valida(None) is False
+
+def test_edad_menor_de_18_no_es_valida() -> None:
+    assert edad_valida(16) is False
+
+def test_edad_de_18_es_valida() -> None:
+    assert edad_valida(18) is True
+
+def test_edad_mayor_de_18_es_valida() -> None:
+    assert edad_valida(25) is True
