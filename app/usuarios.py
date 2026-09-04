@@ -34,13 +34,19 @@ def validar_usuario(usuario: Usuario) -> None:
     if activo is not None and not isinstance(activo, bool):
         raise UsuarioInvalidoError("El campo activo debe ser booleano")
 
+
 def es_usuario_valido(usuario: Usuario) -> bool:
     validar_usuario(usuario)
 
     edad = usuario.get("edad")
     activo = usuario.get("activo")
 
-    return bool(activo and edad is not None and edad >= 18)
+    return bool(activo and edad_valida(edad))
+
+
+def edad_valida(edad: int | None) -> bool:
+    return edad is not None and edad >= 18
+
 
 def procesar_usuarios(usuarios: list[Usuario]) -> list[str]:
     resultado = []
