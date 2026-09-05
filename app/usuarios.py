@@ -41,11 +41,15 @@ def es_usuario_valido(usuario: Usuario) -> bool:
     edad = usuario.get("edad")
     activo = usuario.get("activo")
 
-    return bool(activo and edad_valida(edad))
+    return bool(usuario_activo(activo) and edad_valida(edad))
 
 
 def edad_valida(edad: int | None) -> bool:
     return edad is not None and edad >= 18
+
+
+def usuario_activo(activo: bool | None) -> bool:
+    return activo is True
 
 
 def procesar_usuarios(usuarios: list[Usuario]) -> list[str]:

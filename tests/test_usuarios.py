@@ -8,6 +8,7 @@ from app.usuarios import (
     edad_valida,
     es_usuario_valido,
     procesar_usuarios,
+    usuario_activo,
     validar_usuario,
 )
 
@@ -357,3 +358,9 @@ def test_edad_de_18_es_valida() -> None:
 
 def test_edad_mayor_de_18_es_valida() -> None:
     assert edad_valida(25) is True
+
+def test_usuario_activo_es_valido() -> None:
+    assert usuario_activo(True) is True
+
+def test_activo_false_no_es_valido() -> None:
+    assert usuario_activo(False) is False
