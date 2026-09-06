@@ -19,8 +19,12 @@ def validar_usuario(usuario: Usuario) -> None:
 
     if nombre is None:
         raise UsuarioInvalidoError("El campo nombre es obligatorio")
+
     if not isinstance(nombre, str):
         raise UsuarioInvalidoError("El campo nombre debe ser texto")
+
+    if not nombre_valido(nombre):
+        raise UsuarioInvalidoError("El nombre no puede estar vacio")
 
     if not usuario_id_valido(id_usuario):
         raise UsuarioInvalidoError("El campo id debe ser un entero")
@@ -54,6 +58,10 @@ def usuario_activo(activo: bool | None) -> bool:
 
 def usuario_id_valido(id_usuario: int | None) -> bool:
     return id_usuario is None or type(id_usuario) is int
+
+
+def nombre_valido(nombre: str) -> bool:
+    return nombre.strip() != ""
 
 
 def procesar_usuarios(usuarios: list[Usuario]) -> list[str]:

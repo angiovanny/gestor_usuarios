@@ -7,6 +7,7 @@ from app.usuarios import (
     UsuarioInvalidoError,
     edad_valida,
     es_usuario_valido,
+    nombre_valido,
     procesar_usuarios,
     usuario_activo,
     usuario_id_valido,
@@ -374,3 +375,22 @@ def test_usuario_id_none_es_valido() -> None:
 
 def test_usuario_id_booleano_no_es_valido() -> None:
     assert usuario_id_valido(True) is False
+
+def test_nombre_valido_devuelve_true_para_nombre_correcto() -> None:
+    assert nombre_valido("Juan") is True
+
+def test_nombre_vacio_no_es_valido() -> None:
+    assert nombre_valido("") is False
+
+def test_nombre_solo_con_espacios_no_es_valido() -> None:
+    assert nombre_valido("    ") is False
+
+def test_usuario_con_nombre_vacio_no_es_valido() -> None:
+    usuario: Usuario = {
+        "nombre": "",
+        "edad": 25,
+        "activo": True
+    }
+
+    with pytest.raises(UsuarioInvalidoError):
+        es_usuario_valido(usuario)
