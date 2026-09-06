@@ -22,9 +22,9 @@ def validar_usuario(usuario: Usuario) -> None:
     if not isinstance(nombre, str):
         raise UsuarioInvalidoError("El campo nombre debe ser texto")
 
-    if id_usuario is not None and type(id_usuario) is not int:
+    if not usuario_id_valido(id_usuario):
         raise UsuarioInvalidoError("El campo id debe ser un entero")
-    
+
     edad = usuario.get("edad")
     activo = usuario.get("activo")
 
@@ -50,6 +50,10 @@ def edad_valida(edad: int | None) -> bool:
 
 def usuario_activo(activo: bool | None) -> bool:
     return activo is True
+
+
+def usuario_id_valido(id_usuario: int | None) -> bool:
+    return id_usuario is None or type(id_usuario) is int
 
 
 def procesar_usuarios(usuarios: list[Usuario]) -> list[str]:
