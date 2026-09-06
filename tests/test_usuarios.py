@@ -9,6 +9,7 @@ from app.usuarios import (
     es_usuario_valido,
     procesar_usuarios,
     usuario_activo,
+    usuario_id_valido,
     validar_usuario,
 )
 
@@ -364,3 +365,12 @@ def test_usuario_activo_es_valido() -> None:
 
 def test_activo_false_no_es_valido() -> None:
     assert usuario_activo(False) is False
+
+def test_usuario_id_entero_es_valido() -> None:
+    assert usuario_id_valido(123) is True
+
+def test_usuario_id_none_es_valido() -> None:
+    assert usuario_id_valido(None) is True
+
+def test_usuario_id_booleano_no_es_valido() -> None:
+    assert usuario_id_valido(True) is False
