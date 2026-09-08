@@ -1,4 +1,4 @@
-from typing import NotRequired, TypedDict
+from typing import Any, NotRequired, TypedDict
 
 
 class Usuario(TypedDict):
@@ -32,7 +32,7 @@ def validar_usuario(usuario: Usuario) -> None:
     edad = usuario.get("edad")
     activo = usuario.get("activo")
 
-    if edad is not None and type(edad) is not int:
+    if not edad_tipo_valido(edad):
         raise UsuarioInvalidoError("La edad debe ser un entero o None")
 
     if activo is not None and not isinstance(activo, bool):
@@ -64,11 +64,15 @@ def nombre_valido(nombre: str) -> bool:
     return nombre.strip() != ""
 
 
+def edad_tipo_valido(edad: Any) -> bool:
+    return edad is None or type(edad) is int
+
+
 def procesar_usuarios(usuarios: list[Usuario]) -> list[str]:
     resultado = []
 
     for usuario in usuarios:
-       if es_usuario_valido(usuario):
+        if es_usuario_valido(usuario):
             resultado.append(usuario["nombre"])
 
     return resultado
