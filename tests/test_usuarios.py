@@ -5,6 +5,7 @@ import pytest
 from app.usuarios import (
     Usuario,
     UsuarioInvalidoError,
+    edad_tipo_valido,
     edad_valida,
     es_usuario_valido,
     nombre_valido,
@@ -394,3 +395,18 @@ def test_usuario_con_nombre_vacio_no_es_valido() -> None:
 
     with pytest.raises(UsuarioInvalidoError):
         es_usuario_valido(usuario)
+
+def test_edad_entera_es_tipo_valido() -> None:
+    assert edad_tipo_valido(25) is True
+
+def test_edad_none_es_tipo_valido() -> None:
+    assert edad_tipo_valido(None) is True
+
+def test_edad_menor_de_edad_es_tipo_valido() -> None:
+    assert edad_tipo_valido(17) is True
+
+def test_edad_texto_no_es_tipo_valido() -> None:
+    assert edad_tipo_valido("17") is False
+
+def test_edad_booleano_no_es_tipo_valido() -> None:
+    assert edad_tipo_valido(True) is False
